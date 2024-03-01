@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>Denglish - Quiz</title>
+    <script>
+        var questions = [
+            { question: "Simple Past: They _____ to the park yesterday.", verb: "(to) go", answer: "went" },
+            { question: "Past Participle: She has _____ the book.", verb: "(to) read", answer: "read" },
+            { question: "Simple Past: I _____ my homework last night.", verb: "(to) finish", answer: "finished" },
+            { question: "Past Participle: We have _____ a new song.", verb: "(to) write", answer: "written" },
+            { question: "Simple Past: He _____ his bike to school yesterday.", verb: "(to) ride", answer: "rode" },
+            { question: "Past Participle: They have _____ the movie already.", verb: "(to) see", answer: "seen" },
+            { question: "Simple Past: We _____ football in the park last weekend.", verb: "(to) play", answer: "played" },
+            { question: "Past Participle: He has _____ a beautiful painting.", verb: "(to) create", answer: "created" },
+            { question: "Simple Past: She _____ her keys at home this morning.", verb: "(to) leave", answer: "left" },
+            { question: "Past Participle: They have _____ a delicious cake for the party.", verb: "(to) bake", answer: "baked" },
+            { question: "Simple Past: I _____ to the store after work yesterday.", verb: "(to) go", answer: "went" },
+            { question: "Past Participle: We have _____ many interesting places during our vacation.", verb: "(to) visit", answer: "visited" }
+        ];
+
+        var currentQuestionIndex = 0;
+        var correctAnswers = 0;
+
+        function loadQuestion() {
+            var currentQuestion = questions[currentQuestionIndex];
+            document.getElementById("question").innerHTML = currentQuestion.question;
+            document.getElementById("verb").innerHTML = currentQuestion.verb;
+        }
+
+        function checkAnswer() {
+            var userAnswer = document.getElementById("answer").value.toLowerCase();
+            var correctAnswer = questions[currentQuestionIndex].answer.toLowerCase();
+            var resultMessage = document.getElementById("result");
+            var answerInput = document.getElementById("answer");
+            var submitBtn = document.getElementById("submitBtn");
+
+            if (!answerInput.disabled) {
+                if (userAnswer === correctAnswer) {
+                    resultMessage.innerHTML = "Richtig!";
+                    resultMessage.className = "correct";
+                    correctAnswers++;
+                } else {
+                    resultMessage.innerHTML = "Falsch! Die richtige Antwort ist: " + correctAnswer;
+                    resultMessage.className = "incorrect";
+                }
+
+                answerInput.disabled = true;
+                submitBtn.disabled = true;
+            }
+        }
+
+        function nextQuestion() {
+            var answerInput = document.getElementById("answer");
+            var submitBtn = document.getElementById("submitBtn");
+            var resultMessage = document.getElementById("result");
+            var questionDiv = document.getElementById("question");
+            var verbSpan = document.getElementById("verb");
+            var summaryDiv = document.getElementById("summary");
+
+            answerInput.value = "";
+            answerInput.disabled = false;
+            submitBtn.disabled = false;
+            resultMessage.innerHTML = "";
+            resultMessage.className = "";
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                // Display summary and remove question information
+                questionDiv.style.display = "none";
+                verbSpan.style.display = "none";
+                summaryDiv.style.display = "block";
+                displaySummary();
+            }
+        }
+
+        function displaySummary() {
+            var summaryDiv = document.getElementById("summary");
+            summaryDiv.innerHTML = "Du hast " + correctAnswers + " von " + questions.length + " richtig. Mach ein Bildschirmfoto und schick es in den Klassen-Chat!";
+            document.getElementById("nextBtn").disabled = true;
+        }
+
+        window.onload = function () {
+            loadQuestion();
+        };
+    </script>
+</head>
+<body>
+    <div class="topnav">
+        <a href="index.html">Home</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="spickzettel.html">Spickzettel</a>
+    </div>
+
+    <hr>
+
+    <h1>Denglish</h1>
+    <h3>"Englisch bei Yoda du gelernt hast?"</h3>
+
+    <hr>
+
+    <div id="question"></div>
+    <p>Verb: <span id="verb"></span></p>
+    <input type="text" id="answer" placeholder="Deine Antwort eingeben">
+    <button id="submitBtn" onclick="checkAnswer()">Einreichen</button>
+    <div id="result"></div>
+    <button id="nextBtn" onclick="nextQuestion()">Nächste Frage</button>
+    <div id="summary" style="display:none;"></div>
+</body>
+</html>
